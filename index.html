@@ -1,0 +1,157 @@
+<html>
+<head>
+    <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+<script src="js/main.js"></script>
+<head>
+<body>    
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg py-1 navbar-light bg-light shadow-sm fixed-top"> 
+    <div class="col-lg-12 npnm">
+                   
+        <img src="images/logo.png" width="150"  height="47" alt=""
+             class="d-inline-block align-middle mr-2">
+
+        <span class="text-uppercase font-weight-bold text-muted">AFI Dashboard</span>
+    </div>
+    </nav>
+    <div class="row">
+        <div class="col-md-4">
+        <div class="form-group">
+            <label for="sel1">User list:</label>
+            <select class="form-control"  id="users00">
+             
+            </select>
+           </div> 
+          </div>
+
+          <div class="col-md-4">
+          <div class="form-group">
+            <label for="sel1">Select date:</label>
+            <div class='input-group date' id='datetimepicker1'>
+               <input id="datetime1" type='text' class="form-control" />
+               <span class="input-group-addon">
+               <span class="glyphicon glyphicon-calendar"></span>
+               </span>
+            </div>
+            </div>
+         </div>
+
+         <div class="col-md-4" style="padding-top: 25px;">
+            <div class="form-group">
+        
+            <button class="btn" style="background-color:green; color:white;" onclick="downloadCSV()">
+                Download Excel
+            </button> 
+            </div>
+         </div>    
+       
+       </div>
+    <div class="row">
+
+     <div class="col-sm-3">
+    <div class="row">
+    <div class="col-sm-12">        
+     <div class="btn" style="background-color:#006A4C; color:white; width: 100%;height: 34px">
+        <span style="padding-right:20px; text-align: center">Total Surveyed</span><span id="total_count"></span>
+    </div>
+    </div>
+    <div class="col-sm-12" style="padding-top:3px; ">
+    <div class="btn" style="background-color:#616161; color:white; width:100%; height: 34px">
+        <span style="padding-right:20px; text-align:center">Total Black Point</span><span id="total_black_count"></span>
+    </div>
+    </div>
+    </div>
+    </div>
+
+     <div class="col-sm-3">
+        <div class="btn" style=" background-color:#df1e1e; color:white; width: 100%;height: 70px">
+            <span>Black Point Today</span><br /><span id="black_count_today"></span>
+        </div>
+     </div>
+     <div class="col-sm-3">
+        <div class="btn" style="background-color:#025CAA; color:white; width: 100%;height: 70px">
+            <span>Surveyed Today</span><br /><span id="total_count_today"></span>
+        </div>
+     </div>
+    
+     <div class="col-sm-3">
+        <div class="btn" style="background-color:green; color:white; width: 100%;height: 70px">
+           <span>Total Submitted</span><br /><span id="total_submitted"></span>
+        </div>
+
+    </div> 
+    
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+           
+                <div id="container4"></div>
+          
+        </div>
+    </div>    
+    <div class="row">
+
+    <div class="col-md-12">    
+        <div id="container"></div>
+    </div>
+
+    <div class="col-md-12">    
+        <div id="container1"></div>
+    </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+           
+                <div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+          
+        </div>
+    </div> 
+    
+    <div class="row">
+      
+
+          <div class="col-md-4">
+          <div class="form-group">
+            <label for="sel1">select date:</label>
+            <div class='input-group date' id='datetimepicker3'>
+               <input id="datetime3" type='text' class="form-control" />
+               <span class="input-group-addon">
+               <span class="glyphicon glyphicon-calendar"></span>
+               </span>
+            </div>
+            </div>
+         </div>
+
+         <div class="col-md-4" style="padding-top: 25px;">
+            <div class="form-group">
+        
+            <button class="btn btn-success" onclick="filterTimeGraph()">
+                Search
+            </button> 
+            </div>
+         </div>    
+       
+       </div>
+
+    <div class="row">
+        <div class="col-md-12">
+           
+                <div id="container3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+          
+        </div>
+    </div>   
+     
+</div>
+</body>
+</html>
