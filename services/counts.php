@@ -156,12 +156,21 @@ class Tehsil extends connection {
                     public function getTotal_installed() {
 
                             //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";
-                                $sql="select count(*) from tbl_survey_details where installed_status='Installed'";
+                                $sql="select installed_status ,count(installed_status)  
+                                from tbl_survey_details where installed_status is not null
+                                and installed_status<>'' group by installed_status order by installed_status ASC";
                                   $output = array();
                                   $result_query = pg_query($sql);
                                   if ($result_query) {
                                       $arrq = pg_fetch_all($result_query);
-                                      $output= $arrq;
+                                      $output['cat_total']= $arrq;
+                                              
+                                  }
+                                  $sql1="select count(*) from tbl_survey_details";
+                                  $result_query1 = pg_query($sql1);
+                                  if ($result_query1) {
+                                      $arrq1 = pg_fetch_all($result_query1);
+                                      $output['overall_total']= $arrq1;
                                               
                                   }
                           

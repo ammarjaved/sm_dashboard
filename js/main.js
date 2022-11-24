@@ -35,7 +35,7 @@ $( document ).ready(function() {
 
 
 
-function pieChart(a,b,c){
+function pieChart(total,installed,unsurveyed,tras){
     
     Highcharts.chart('container4', {
         chart: {
@@ -71,15 +71,23 @@ function pieChart(a,b,c){
             name: 'Brands',
             colorByPoint: true,
             data: [{
-                name: 'Total Installed',
-                y: a,
+                name: 'Total Orders',
+                y: total,
                 sliced: true,
                 selected: true,
+                color:'orange'
+            }, {
+                name: 'Total Installed',
+                y: installed,
                 color:'green'
             }, {
-                name: 'Not Installed',
-                y: b,
+                name: 'Total Unsurvyed',
+                y: unsurveyed,
                 color:'red'
+            }, {
+                name: 'Total Tras',
+                y: tras,
+                color:'black'
             }]
         }]
     });
@@ -540,13 +548,15 @@ function getSurveyedCountsSubmitted(){
         async: false,
         success: function callback(data) {
 
-        totalInstalled=parseInt(data[0].count);
-         var total_not_submitted=(parseInt(totalOrders)-parseInt(data[0].count));
-         totalremaining=100-(totalInstalled+total_not_submitted);
-         pieChart(totalInstalled,total_not_submitted,totalremaining)
+        total=parseInt(data.overall_total[0].count);
+        
+         var installed=parseInt(data.cat_total[0].count);
+         var unsurveyed=parseInt(data.cat_total[2].count);;
+         var tras=parseInt(data.cat_total[1].count);
+         pieChart(total,installed,unsurveyed,tras);
 
 
-        $("#total_installed").html(data[0].count);
+        $("#total_installed").html(installed);
         
 
         }
