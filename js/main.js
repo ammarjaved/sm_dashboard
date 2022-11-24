@@ -547,15 +547,15 @@ function getSurveyedCountsSubmitted(){
         method: 'GET',
         async: false,
         success: function callback(data) {
-
+            
         total=parseInt(data.overall_total[0].count);
         
          var installed=parseInt(data.cat_total[0].count);
-         var unsurveyed=parseInt(data.cat_total[2].count);;
+         var unsurveyed=parseInt(data.cat_total[2].count);
          var tras=parseInt(data.cat_total[1].count);
          pieChart(total,installed,unsurveyed,tras);
 
-
+        
         $("#total_installed").html(installed);
         
 
