@@ -2,10 +2,11 @@
 
 //     getTotalCounts();
 // },3000);
-var totalsubmitted1=0;
+var totalInstalled=0;
 var totalremaining=0;
-var totalsurveyed1=0;
+var totalOrders=0;
 var totalnotsubmitted=0; 
+
 
 $( document ).ready(function() {
     getTotalCounts();
@@ -35,6 +36,7 @@ $( document ).ready(function() {
 
 
 function pieChart(a,b,c){
+    
     Highcharts.chart('container4', {
         chart: {
             plotBackgroundColor: null,
@@ -45,7 +47,7 @@ function pieChart(a,b,c){
 
         credits:false,
         title: {
-            text: 'Submitted Not Submitted and Remaining'
+            text: 'Installed not Installed'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -69,18 +71,14 @@ function pieChart(a,b,c){
             name: 'Brands',
             colorByPoint: true,
             data: [{
-                name: 'Total Submitted',
+                name: 'Total Installed',
                 y: a,
                 sliced: true,
                 selected: true,
                 color:'green'
             }, {
-                name: 'Not Submitted',
+                name: 'Not Installed',
                 y: b,
-                color:'orange'
-            }, {
-                name: 'Not Surveyed Yet',
-                y: c,
                 color:'red'
             }]
         }]
@@ -262,7 +260,7 @@ function getTotalCounts(){
             var val1=[];
             var val2=[];
            for(var i=0;i<data.total.length;i++){
-            cat.push(data.total[i].username)
+            // cat.push(data.total[i].username)
              val.push(parseInt(data.total[i].count))
            }
 
@@ -307,6 +305,9 @@ function getTotalCounts(){
             }   
            
           // }
+        //   val = 52;
+        //   val1 =  34;
+        //   val2 = 22;
            createHighChart(cat,val,'container','Total Progress',val1,val2)
 
         }
@@ -467,14 +468,14 @@ function getTimeCounts(d){
 function getSurveyedCounts(){
 
     $.ajax({
-        url: 'services/counts.php?id=total',
+        url: 'services/counts.php?id=total_orders',
         dataType: 'JSON',
         method: 'GET',
         async: false,
         success: function callback(data) {
 
-        $("#total_count").html(data[0].count)
-        totalsurveyed1=data[0].count;
+        $("#total_orders").html(data[0].count)
+        totalOrders=data[0].count;
 
         }
     });
@@ -484,13 +485,13 @@ function getSurveyedCounts(){
 function getSurveyedCountsToday(){
 
     $.ajax({
-        url: 'services/counts.php?id=today_survey',
+        url: 'services/counts.php?id=today_tras',
         dataType: 'JSON',
         method: 'GET',
         async: false,
         success: function callback(data) {
 
-        $("#total_count_today").html(data[0].count)
+        $("#total_tras").html(data[0].count)
 
         }
     });
@@ -500,13 +501,13 @@ function getSurveyedCountsToday(){
 function getSurveyedBlackCountsToday(){
 
     $.ajax({
-        url: 'services/counts.php?id=today_black_survey',
+        url: 'services/counts.php?id=total_not_installed',
         dataType: 'JSON',
         method: 'GET',
         async: false,
         success: function callback(data) {
 
-        $("#black_count_today").html(data[0].count)
+        $("#total_not_installed").html(data[0].count)
 
         }
     });
@@ -517,13 +518,13 @@ function getSurveyedBlackCountsToday(){
 function getSurveyedTotalBlack(){
 
     $.ajax({
-        url: 'services/counts.php?id=total_black_survey',
+        url: 'services/counts.php?id=site_info',
         dataType: 'JSON',
         method: 'GET',
         async: false,
         success: function callback(data) {
 
-        $("#total_black_count").html(data[0].count)
+        $("#site_info").html(data[0].count)
 
         }
     });
@@ -533,19 +534,19 @@ function getSurveyedTotalBlack(){
 function getSurveyedCountsSubmitted(){
 
     $.ajax({
-        url: 'services/counts.php?id=submit',
+        url: 'services/counts.php?id=total_installed',
         dataType: 'JSON',
         method: 'GET',
         async: false,
         success: function callback(data) {
 
-         totalsubmitted1=(parseInt(data[0].count))*100/50000;
-         var total_not_submitted=(parseInt(totalsurveyed1)-parseInt(data[0].count))*100/50000
-         totalremaining=100-(totalsubmitted1+total_not_submitted);
-         pieChart(totalsubmitted1,total_not_submitted,totalremaining)
+        totalInstalled=parseInt(data[0].count);
+         var total_not_submitted=(parseInt(totalOrders)-parseInt(data[0].count));
+         totalremaining=100-(totalInstalled+total_not_submitted);
+         pieChart(totalInstalled,total_not_submitted,totalremaining)
 
 
-        $("#total_submitted").html(data[0].count);
+        $("#total_installed").html(data[0].count);
         
 
         }
@@ -563,7 +564,7 @@ function getAllUsers(){
         success: function callback(data) {
         var str='<option>select option</option>'
         for(var i=0;i<data.length;i++){
-            str=str+'<option value="'+data[i].user_id+'">'+data[i].username+'</option>';
+            str=str+'<option value="'+data[i].id+'">'+data[i].username+'</option>';
         }    
         $("#users00").html(str)
 

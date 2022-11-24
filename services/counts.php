@@ -14,16 +14,18 @@ class Tehsil extends connection {
     public function getAllCounts() {
 
   //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";where  a.date_created::date<>'2021-12-01'
-      $sql="select b.username,count(*) from demand_point a inner join tbl_user_info b on a.user_id=b.user_id  and is_not_surveyed<>'Yes' group by b.username";
-        $output = array();
+    //   $sql="select b.username,count(*) from demand_point a inner join tbl_user_info b on a.user_id=b.user_id  and is_not_surveyed<>'Yes' group by b.username";
+        $sql = "select count(*) from tbl_survey_details where installed_status='Unsurveyed'";
+    $output = array();
         $result_query = pg_query($sql);
         if ($result_query) {
             $arrq = pg_fetch_all($result_query);
-            $output['total']= $arrq;
+            echo $output['total']= $arrq;
+            
                     
         }
-
-        $sql="select  b.username,count(*) from demand_point a  ,tbl_user_info b  where data_submited is not null and a.user_id=b.user_id group by b.username";
+        exit();
+        $sql="select count(*) from tbl_survey_details where installed_status='Unsurveyed'";
         //$output = array();
         $result_query = pg_query($sql);
         if ($result_query) {
@@ -32,7 +34,7 @@ class Tehsil extends connection {
                     
         }
 
-        $sql="select  b.username,count(*) from demand_point a  ,tbl_user_info b  where is_not_surveyed='Yes' and a.user_id=b.user_id group by b.username";
+        $sql="select count(*) from tbl_survey_details where installed_status='Installed'";
         //$output = array();
         $result_query = pg_query($sql);
         if ($result_query) {
@@ -81,10 +83,11 @@ class Tehsil extends connection {
                       $this->closeConnection();
                   }      
 
-                  public function getTotal_SurveyedCount() {
+                  public function getTotal_Orders() {
 
                     //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";
-                        $sql="select count(*) from demand_point where phase is not null and phase<>''";
+                        // $sql="select count(*) from demand_point where phase is not null and phase<>''";
+                        $sql = "select count(*) from tbl_survey_details";
                           $output = array();
                           $result_query = pg_query($sql);
                           if ($result_query) {
@@ -98,10 +101,10 @@ class Tehsil extends connection {
                           $this->closeConnection();
                       }    
                       
-                    public function getTotal_DoneToday() {
+                    public function getTotal_Tras() {
 
                         //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";
-                            $sql="select count(*) from demand_point where updated_at::date=now()::date  and phase<>''";
+                            $sql="select count(*) from tbl_survey_details where installed_status='TRAS'";
                               $output = array();
                               $result_query = pg_query($sql);
                               if ($result_query) {
@@ -115,10 +118,10 @@ class Tehsil extends connection {
                               $this->closeConnection();
                     }
                     
-                    public function getBlack_DoneToday() {
+                    public function getTotal_notInstalled() {
 
                         //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";
-                            $sql="select count(*) from demand_point where updated_at::date=now()::date and  phase=''";
+                            $sql="select count(*) from tbl_survey_details where installed_status='Unsurveyed'";
                               $output = array();
                               $result_query = pg_query($sql);
                               if ($result_query) {
@@ -132,10 +135,11 @@ class Tehsil extends connection {
                               $this->closeConnection();
                     }
                     
-                    public function getTotal_Blackpoint() {
+                    public function getTotal_siteInfo() {
 
                         //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";
-                            $sql="select count(*) from demand_point where phase is null or phase =''";
+                            // $sql="select count(*) from demand_point where phase is null or phase =''";
+                            $sql="select count(*) from tbl_survey_details where installed_status='Installed'";
                               $output = array();
                               $result_query = pg_query($sql);
                               if ($result_query) {
@@ -149,10 +153,10 @@ class Tehsil extends connection {
                               $this->closeConnection();
                     }
 
-                    public function getTotal_submitted() {
+                    public function getTotal_installed() {
 
                             //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";
-                                $sql="select count(*) from demand_point where data_submited='submitted'";
+                                $sql="select count(*) from tbl_survey_details where installed_status='Installed'";
                                   $output = array();
                                   $result_query = pg_query($sql);
                                   if ($result_query) {
@@ -168,7 +172,7 @@ class Tehsil extends connection {
                     
                     public function getAll_Users() {
 
-                            $sql="select user_id,username from tbl_user_info order by  username";
+                            $sql="select id,username from tbl_user";
                               $output = array();
                               $result_query = pg_query($sql);
                               if ($result_query) {
@@ -212,19 +216,19 @@ echo $json->getAllCounts();
     echo $json->getTodayCounts();
 }else if($_GET['id']=='date'){
     echo $json->getDateCounts();
-}else if($_GET['id']=='total'){
-    echo $json->getTotal_SurveyedCount();
+}else if($_GET['id']=='total_orders'){
+    echo $json->getTotal_Orders();
 }
-else if($_GET['id']=='today_survey'){
-    echo $json->getTotal_DoneToday();
+else if($_GET['id']=='today_tras'){
+    echo $json->getTotal_tras();
 }
-else if($_GET['id']=='today_black_survey'){
-    echo $json->getBlack_DoneToday();
+else if($_GET['id']=='total_not_installed'){
+    echo $json->getTotal_notInstalled();
 }
-else if($_GET['id']=='total_black_survey'){
-    echo $json->getTotal_Blackpoint();
-}else if($_GET['id']=='submit'){
-    echo $json->getTotal_submitted();
+else if($_GET['id']=='site_info'){
+    echo $json->getTotal_siteInfo();
+}else if($_GET['id']=='total_installed'){
+    echo $json->getTotal_installed();
 }else if($_GET['id']=='users'){
     echo $json->getAll_Users();
 }else if($_GET['id']=='time'){
