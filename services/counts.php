@@ -15,10 +15,7 @@ class Tehsil extends connection {
 
   //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";where  a.date_created::date<>'2021-12-01'
     //   $sql="select b.username,count(*) from demand_point a inner join tbl_user_info b on a.user_id=b.user_id  and is_not_surveyed<>'Yes' group by b.username";
-        $sql = "with foo as (select * from tbl_user)
-        select c.username,a.installed_status,count(a.installed_status) from tbl_survey_details a,tbl_meter b ,foo c
-        where a.installation=b.installation_id and installed_status is not null and b.created_by::integer=c.id::integer  
-        group by a.installed_status,c.username";
+        $sql = "with foo as (select * from tbl_user) select c.username,count(a.installed_status) from tbl_survey_details a,tbl_meter b ,foo c where a.installation=b.installation_id and installed_status is not null and b.created_by::integer=c.id::integer and installed_status='Installed' group by c.username";
     $output = array();
         $result_query = pg_query($sql);
         if ($result_query) {
@@ -28,23 +25,23 @@ class Tehsil extends connection {
                     
         }
         // exit();
-        // $sql="select count(*) from tbl_survey_details where installed_status='Unsurveyed'";
-        // //$output = array();
-        // $result_query = pg_query($sql);
-        // if ($result_query) {
-        //     $arrq = pg_fetch_all($result_query);
-        //     $output['submitted']= $arrq;
+        $sql="with foo as (select * from tbl_user) select c.username,count(a.installed_status) from tbl_survey_details a,tbl_meter b ,foo c where a.installation=b.installation_id and installed_status is not null and b.created_by::integer=c.id::integer and installed_status='Unsurveyed' group by c.username";
+        //$output = array();
+        $result_query = pg_query($sql);
+        if ($result_query) {
+            $arrq = pg_fetch_all($result_query);
+            $output['submitted']= $arrq;
                     
-        // }
+        }
 
-        // $sql="select count(*) from tbl_survey_details where installed_status='Installed'";
-        // //$output = array();
-        // $result_query = pg_query($sql);
-        // if ($result_query) {
-        //     $arrq = pg_fetch_all($result_query);
-        //     $output['black']= $arrq;
+        $sql="with foo as (select * from tbl_user) select c.username,count(a.installed_status) from tbl_survey_details a,tbl_meter b ,foo c where a.installation=b.installation_id and installed_status is not null and b.created_by::integer=c.id::integer and installed_status='TRAS' group by c.username";
+        //$output = array();
+        $result_query = pg_query($sql);
+        if ($result_query) {
+            $arrq = pg_fetch_all($result_query);
+            $output['black']= $arrq;
                     
-        // }
+        }
 
         return json_encode($output);
 
@@ -54,7 +51,7 @@ class Tehsil extends connection {
     public function getTodayCounts() {
 
         //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";
-            $sql="select b.username,count(*) from demand_point a inner join tbl_user_info b on a.user_id=b.user_id where  a.updated_at::date=now()::date group by b.username";
+            $sql="with foo as (select * from tbl_user) select c.username,count(a.installed_status) from tbl_survey_details a,tbl_meter b ,foo c where a.installation=b.installation_id and installed_status is not null and b.created_by::integer=c.id::integer and b.updated_at::date = now()::date group by c.username";
               $output = array();
               $result_query = pg_query($sql);
               if ($result_query) {
@@ -72,7 +69,11 @@ class Tehsil extends connection {
               public function getDateCounts() {
 
                 //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";
-                    $sql="select b.username,a.updated_at::date,count(*) from demand_point a inner join tbl_user_info b on a.user_id=b.user_id where  a.user_id is not null and updated_at>'2022-02-07 02:43:44.20696' group by b.username,a.updated_at::date order by updated_at::date";
+                   // $sql="select b.username,a.updated_at::date,count(*) from demand_point a inner join tbl_user_info b on a.user_id=b.user_id where  a.user_id is not null and updated_at>'2022-02-07 02:43:44.20696' group by b.username,a.updated_at::date order by updated_at::date";
+                     $sql = "with foo as (select * from tbl_user) select c.username,count(a.installed_status), b.updated_at
+                     from tbl_survey_details a,tbl_meter b ,foo c where a.installation=b.installation_id 
+                     and installed_status is not null and b.created_by::integer=c.id::integer and updated_at>now() 
+                     group by c.username, b.updated_at";
                       $output = array();
                       $result_query = pg_query($sql);
                       if ($result_query) {

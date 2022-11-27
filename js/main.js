@@ -205,17 +205,17 @@ function createHighChart(cat,val,id,title,val1,val2){
             },
         
             series: [{
-                name:title,
+                name:'Total Installed',
                 data: val,
-                color:'red'        
-    
-            },{
-                name:'submitted',
-                data: val1,
                 color:'green'        
     
             },{
-                name:'black points',
+                name:'Total Unsurveyed',
+                data: val1,
+                color:'red'        
+    
+            },{
+                name:'Total TRAS',
                 data: val2,
                 color:'black'        
     
@@ -268,7 +268,7 @@ function getTotalCounts(){
             var val1=[];
             var val2=[];
            for(var i=0;i<data.total.length;i++){
-            // cat.push(data.total[i].username)
+            cat.push(data.total[i].username)
              val.push(parseInt(data.total[i].count))
            }
 
@@ -316,6 +316,7 @@ function getTotalCounts(){
         //   val = 52;
         //   val1 =  34;
         //   val2 = 22;
+
            createHighChart(cat,val,'container','Total Progress',val1,val2)
 
         }
@@ -357,6 +358,7 @@ function getDateCounts(){
             var series=[];
             var temp=[];
             var cat=[];
+
             for(var k=0;k<data.length;k++){
                 if(cat.includes(data[k].updated_at)==false){
                     cat.push(data[k].updated_at)
