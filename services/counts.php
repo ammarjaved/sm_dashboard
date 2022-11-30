@@ -217,11 +217,18 @@ class Tehsil extends connection {
                 }  
                 
                 public function getByTime_Users($date) {                  
-                    $sql="select username, updated_at,sum(total) as count from (
-                    select b.username,date_part('hour', a.updated_at) as updated_at  ,count(*) as total  from demand_point a inner join 
-                    tbl_user_info b on a.user_id=b.user_id where  a.user_id is not null and updated_at::date='$date'
-                    group by b.username, updated_at order by updated_at
-                    ) as foo group by username,updated_at  order by updated_at";
+                    // $sql="select username, updated_at,sum(total) as count from (
+                    // select b.username,date_part('hour', a.updated_at) as updated_at  ,count(*) as total  from demand_point a inner join 
+                    // tbl_user_info b on a.user_id=b.user_id where  a.user_id is not null and updated_at::date='$date'
+                    // group by b.username, updated_at order by updated_at
+                    // ) as foo group by username,updated_at  order by updated_at";
+
+                    $sql ="with foo as (select * from tbl_user) select c.username,count(a.installed_status),date_part('hour', b.updated_at)
+                    as updated_at
+                    from tbl_survey_details a,tbl_meter b ,foo c where a.installation=b.installation_id 
+                    and installed_status is not null and b.created_by::integer=c.id::integer and 
+                    b.updated_at::date = '$date'
+                    group by c.username, b.updated_at order by b.updated_at";
 					
 					//echo $sql;
                       $output = array();
