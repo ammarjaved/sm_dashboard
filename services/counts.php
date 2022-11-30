@@ -45,7 +45,7 @@ class Tehsil extends connection {
         $result_query = pg_query($sql);
         if ($result_query) {
             $arrq = pg_fetch_all($result_query);
-            $output['submitted']= $arrq;
+            $output['unsurveyed']= $arrq;
                     
         }
 
@@ -56,7 +56,7 @@ class Tehsil extends connection {
         $result_query = pg_query($sql);
         if ($result_query) {
             $arrq = pg_fetch_all($result_query);
-            $output['black']= $arrq;
+            $output['tras']= $arrq;
                     
         }
 

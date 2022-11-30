@@ -278,8 +278,8 @@ function getTotalCounts(){
              val.push(parseInt(data.total[i].count))
            }
 
-           for(var k=0;k<data.submitted.length;k++){
-               cat1.push(data.submitted[k].username)
+           for(var k=0;k<data.unsurveyed.length;k++){
+               cat1.push(data.unsurveyed[k].username)
            }
          //  for(var i=0;i<cat.length;i++){
             for(var j=0;j<cat.length;j++){
@@ -287,9 +287,9 @@ function getTotalCounts(){
                    var a=0;
                    var b=0;
                    var c=0;
-                   for(var m=0;m<data.submitted.length;m++){
-                    if(cat[j]==data.submitted[m].username){
-                    val1.push(parseInt(data.submitted[m].count));
+                   for(var m=0;m<data.unsurveyed.length;m++){
+                    if(cat[j]==data.unsurveyed[m].username){
+                    val1.push(parseInt(data.unsurveyed[m].count));
                     }else if(cat1.includes(cat[j])==true){
                         continue;
                     }else{
@@ -301,9 +301,9 @@ function getTotalCounts(){
     
                    } 
 
-                   for(var n=0;n<data.black.length;n++){
-                    if(cat[j]==data.black[n].username){
-                    val2.push(parseInt(data.black[n].count));
+                   for(var n=0;n<data.tras.length;n++){
+                    if(cat[j]==data.tras[n].username){
+                    val2.push(parseInt(data.tras[n].count));
                     }else if(cat1.includes(cat[j])==true){
                         continue;
                     }else{
