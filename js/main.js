@@ -191,7 +191,7 @@ function mainBarTimeChart(cat,series){
 
 
 
-function createHighChart(cat,val,id,title,val1,val2){
+function createHighChart(cat,val,id,title,val1,val2,val3){
     if(title=='Total Progress'){
         Highcharts.chart(id, {
             xAxis: {
@@ -211,7 +211,7 @@ function createHighChart(cat,val,id,title,val1,val2){
     
             },{
                 name:'Total Installed',
-                data: val,
+                data: val3,
                 color:'green'        
     
             },{
@@ -338,7 +338,7 @@ function getTotalCounts(){
         //   val1 =  34;
         //   val2 = 22;
 
-           createHighChart(cat,val,'container','Total Progress',val1,val2)
+           createHighChart(cat,val,'container','Total Progress',val1,val2,val3)
 
         }
     });

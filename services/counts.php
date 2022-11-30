@@ -30,7 +30,6 @@ class Tehsil extends connection {
         $sql = "with foo as (select * from tbl_user) select c.username,count(a.installed_status) from tbl_survey_details a,
         tbl_meter b ,foo c where a.installation=b.installation_id and installed_status is not null and b.created_by::integer=c.id::integer
         and installed_status='Installed' group by c.username";
-    $output = array();
         $result_query = pg_query($sql);
         if ($result_query) {
             $arrq = pg_fetch_all($result_query);
