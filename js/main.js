@@ -205,6 +205,11 @@ function createHighChart(cat,val,id,title,val1,val2){
             },
         
             series: [{
+                name:'Total Visited',
+                data: val,
+                color:'purple'        
+    
+            },{
                 name:'Total Installed',
                 data: val,
                 color:'green'        
@@ -267,6 +272,7 @@ function getTotalCounts(){
             var cat1=[];
             var val1=[];
             var val2=[];
+            var val3=[];
            for(var i=0;i<data.total.length;i++){
             cat.push(data.total[i].username)
              val.push(parseInt(data.total[i].count))
@@ -280,6 +286,7 @@ function getTotalCounts(){
                // if(cat[j]==data.submitted[j].username){
                    var a=0;
                    var b=0;
+                   var c=0;
                    for(var m=0;m<data.submitted.length;m++){
                     if(cat[j]==data.submitted[m].username){
                     val1.push(parseInt(data.submitted[m].count));
@@ -303,6 +310,20 @@ function getTotalCounts(){
                         if(b==0){
                         val2.push(0);
                         b=1;
+                        }
+                    }
+    
+                   } 
+
+                   for(var g=0;g<data.installed.length;g++){
+                    if(cat[j]==data.installed[g].username){
+                    val3.push(parseInt(data.installed[g].count));
+                    }else if(cat1.includes(cat[j])==true){
+                        continue;
+                    }else{
+                        if(c==0){
+                        val3.push(0);
+                        c=1;
                         }
                     }
     
