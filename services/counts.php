@@ -90,7 +90,7 @@ class Tehsil extends connection {
                      $sql = "with foo as (select * from tbl_user) select c.username,count(a.installed_status), b.updated_at::date
                      from tbl_survey_details a,tbl_meter b ,foo c where a.installation=b.installation_id 
                      and installed_status is not null and b.created_by::integer=c.id::integer 
-                     group by c.username, b.updated_at::date";
+                     group by c.username, b.updated_at::date order by b.updated_at::date";
                       $output = array();
                       $result_query = pg_query($sql);
                       if ($result_query) {
