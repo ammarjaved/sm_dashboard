@@ -270,6 +270,8 @@ function getTotalCounts(){
             var cat=[];
             var val=[];
             var cat1=[];
+            var cat2=[];
+            var cat3=[];
             var val1=[];
             var val2=[];
             var val3=[];
@@ -281,7 +283,13 @@ function getTotalCounts(){
            for(var k=0;k<data.unsurveyed.length;k++){
                cat1.push(data.unsurveyed[k].username)
            }
-         //  for(var i=0;i<cat.length;i++){
+            for(var k=0;k<data.tras.length;k++){
+                cat2.push(data.tras[k].username)
+            }
+
+            for(var k=0;k<data.installed.length;k++){
+                cat3.push(data.installed[k].username)
+            }         //  for(var i=0;i<cat.length;i++){
             for(var j=0;j<cat.length;j++){
                // if(cat[j]==data.submitted[j].username){
                    var a=0;
@@ -304,7 +312,7 @@ function getTotalCounts(){
                    for(var n=0;n<data.tras.length;n++){
                     if(cat[j]==data.tras[n].username){
                     val2.push(parseInt(data.tras[n].count));
-                    }else if(cat1.includes(cat[j])==true){
+                    }else if(cat2.includes(cat[j])==true){
                         continue;
                     }else{
                         if(b==0){
@@ -318,7 +326,7 @@ function getTotalCounts(){
                    for(var g=0;g<data.installed.length;g++){
                     if(cat[j]==data.installed[g].username){
                     val3.push(parseInt(data.installed[g].count));
-                    }else if(cat1.includes(cat[j])==true){
+                    }else if(cat3.includes(cat[j])==true){
                         continue;
                     }else{
                         if(c==0){
