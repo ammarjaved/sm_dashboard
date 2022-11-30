@@ -40,3 +40,31 @@
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
+
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+.btn:hover, .btn:focus,a:hover {
+    color: black;
+    text-decoration: none;
+    /* border: 0px; */
+}
+.dropdown {
+    display: inline-flex;
+    width: 7%;
+    position: relative;
+}
+#dropdownMenu2{
+    text-shadow: none;
+    background-color: transparent;
+}

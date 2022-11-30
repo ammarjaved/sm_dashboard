@@ -12,6 +12,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
 <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
 <script src="js/main.js"></script>
+
 <head>
 <body> 
     <nav class="navbar navbar-expand-lg py-1 navbar-light bg-light shadow-sm fixed-top"> 
@@ -21,14 +22,62 @@
                  class="d-inline-block align-middle mr-2">
     
             <span class="text-uppercase font-weight-bold text-muted">Smart meter Dashboard</span>
+            <div class="dropdown pull-right " style="margin-top: 7px;">
+                <button class="btn btn-secondary dropdown-toggle pull-right" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Main Menu<span class="caret"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <!-- <a class="dropdown-item" onclick="displayUploadExcel()"><button class="dropdown-item" type="button">Upload Excel</button></a> -->
+                   <a class="dropdown-item" data-toggle="collapse" href="#setDateAndYear" role="button" aria-controls="setDateAndYear" aria-expanded="false"><button class="dropdown-item" type="button" >Set Week and Year</button></a>
+                    
+                </div>
+            </div>
         </div>
         </nav>   
+
+        
+ <div class="collapse container-fluid" id="setDateAndYear">
+    <div class="selcet_area col-lg-3" >
+           <div class=" text-center panel panel-default "  style="margin-top: 7%; padding:4%">
+           <span>Select Week</span> <br>
+            <span id="er_week" class="text-danger"></span>
+               <select name="week_select" id="week_select" class="form-control" aria-label="Default select example" >
+                   <option value="" hidden>Select Option</option>
+               </select>
+           </div>
+   
+       </div> 
+       <div class="selcet_area col-lg-3" >
+           <div class=" text-center panel panel-default"  style="margin-top: 7%; padding:4%">
+           <span>Select Month</span> <br>
+           <span id="er_month" class="text-danger"></span>
+               <select name="month_select" id="month_select" class="form-control" aria-label="Default select example" >
+                   <option value="" hidden>Select Option</option>
+               </select>
+           </div>
+   
+       </div> 
+           <div class="selcet_area col-lg-3" >
+           <div class=" text-center panel panel-default"  style="margin-top: 7%; padding:4%">
+           <span>Select Year</span> <br>
+           <span id="er_year" class="text-danger"></span>
+               <select name="year_select" id="year_select" class="form-control" aria-label="Default select example" >
+                   <option value="" hidden>Select Option</option>
+               </select>
+           </div>
+   
+       </div> 
+       <div class="col-md-3 ">
+           <button class="btn btn-success " style="margin-top: 10%;" onclick="setWeek_er()">Search</button>
+       </div>
+    </div>
+   
 <div class="container-fluid">
     
     
     <div class="row">
 
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <div class="btn" style=" background-color:#006A4C; color:white; width: 100%;height: 70px">
                 <span>Total Orders</span><br /><span id="total_orders"></span>
             </div>
@@ -36,20 +85,32 @@
 
    
 
-     <div class="col-sm-3">
+     <div class="col-sm-2">
         <div class="btn" style=" background-color:#df1e1e; color:white; width: 100%;height: 70px">
-            <span>Not Installed</span><br /><span id="total_not_installed"></span>
+            <span>Total Unsuveryed</span><br /><span id="total_not_installed"></span>
         </div>
      </div>
-     <div class="col-sm-3">
+     <div class="col-sm-2">
         <div class="btn" style="background-color:#025CAA; color:white; width: 100%;height: 70px">
             <span>Totoal Tras</span><br /><span id="total_tras"></span>
         </div>
      </div>
     
-     <div class="col-sm-3">
+     <div class="col-sm-2">
         <div class="btn" style="background-color:green; color:white; width: 100%;height: 70px">
            <span>Total Installed</span><br /><span id="total_installed"></span>
+        </div>
+
+    </div> 
+    <div class="col-sm-2">
+        <div class="btn" style="background-color:#008077; color:white; width: 100%;height: 70px">
+           <span>Visited Current Week</span><br /><span id="visited_current_week"></span>
+        </div>
+
+    </div> 
+    <div class="col-sm-2">
+        <div class="btn" style="background-color:#008068; color:white; width: 100%;height: 70px">
+           <span>Total Remaining</span><br /><span id="total_remaining"></span>
         </div>
 
     </div> 

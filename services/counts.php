@@ -108,7 +108,7 @@ class Tehsil extends connection {
 
                     //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";
                         // $sql="select count(*) from demand_point where phase is not null and phase<>''";
-                        $sql = "select count(*) from tbl_survey_details";
+                        $sql = "select count(*) from tbl_survey_details ";
                           $output = array();
                           $result_query = pg_query($sql);
                           if ($result_query) {
@@ -242,7 +242,72 @@ class Tehsil extends connection {
                       return json_encode($output);
               
                       $this->closeConnection();
-        }       
+        }   
+        
+        function getTotal_currentWeek(){
+            $sql="select count(*) from tbl_survey_details where week_no =(select  max(week_no) from tbl_survey_details) and installed_status<>''";
+                              $output = array();
+                              $result_query = pg_query($sql);
+                              if ($result_query) {
+                                  $arrq = pg_fetch_all($result_query);
+                                  $output= $arrq;
+                                          
+                              }
+                      
+                              return json_encode($output);
+                      
+                              $this->closeConnection();
+
+        }
+
+        function getTotal_Remaining(){
+            $sql="select count(*) from tbl_survey_details where installed_status ='0'";
+            $output = array();
+            $result_query = pg_query($sql);
+            if ($result_query) {
+                $arrq = pg_fetch_all($result_query);
+                $output= $arrq;
+                        
+            }
+    
+            return json_encode($output);
+    
+            $this->closeConnection();
+
+        }
+
+        function SetWeeks(){
+            $output = array();
+
+            $sql1 = "select distinct year from tbl_survey_details";
+            $sql2 = "select distinct month from tbl_survey_details";
+            $sql3 = "select distinct week_no from tbl_survey_details";
+            
+            
+            
+            $query1=pg_query($sql1);
+            $query2=pg_query($sql2);
+            $query3=pg_query($sql3);
+            
+            
+            
+            if($query1)
+            {
+                $output['year'] = pg_fetch_all($query1);
+            }
+            if($query2)
+            {
+                $output['month'] = pg_fetch_all($query2);
+            }
+            if($query3)
+            {
+                $output['week'] = pg_fetch_all($query3);
+            }
+             
+            return json_encode($output);
+    
+            $this->closeConnection();
+        }
 }
 
 $json = new Tehsil();
@@ -271,6 +336,12 @@ else if($_GET['id']=='site_info'){
 }else if($_GET['id']=='time'){
     $t_date=$_GET['d'];
     echo $json->getByTime_Users($t_date);
+}else if($_GET['id']=='currentWeek'){
+    echo $json->getTotal_currentWeek();
+}else if($_GET['id']=='remaining'){
+    echo $json->getTotal_Remaining();
+}else if($_GET['id']=='setWeek'){
+    echo $json->SetWeeks();
 }
 
 

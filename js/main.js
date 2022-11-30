@@ -8,17 +8,23 @@ var totalOrders=0;
 var totalnotsubmitted=0; 
 
 
+
 $( document ).ready(function() {
+    fillCounts();
     getTotalCounts();
     getTodayCounts();
    // mainBarChart();
    getDateCounts();
-   getSurveyedCounts();
-   getSurveyedCountsToday();
+//    getSurveyedCounts();
+//    getSurveyedCountsToday();
    getSurveyedCountsSubmitted();
-   getSurveyedBlackCountsToday();
-   getSurveyedTotalBlack();
+//    getSurveyedBlackCountsToday();
+//    getSurveyedTotalBlack();
    getAllUsers();
+//    getCurrentWeek();
+//    getTotalRemaining();
+   setWeek();
+
    var d=formatDate()
    getTimeCounts(d);
 
@@ -587,7 +593,7 @@ function getSurveyedCountsSubmitted(){
          pieChart(total,installed,unsurveyed,tras);
 
         
-        $("#total_installed").html(installed);
+        // $("#total_installed").html(installed);
         
 
         }
@@ -660,7 +666,122 @@ function filterTimeGraph(){
     var dp=$("#datetime3").val();
     getTimeCounts(dp);
 }
+
+function setWeek(){
+    var week, month, year;
+    $.ajax({
+        url: 'services/counts.php?id=setWeek',
+        dataType: 'JSON',
+        method: 'GET',
+        async: false,
+        success: function callback(data) {
+
+            for(i =0 ; i<data.year.length ; i++){
+                $('#year_select').append(`<option value="${data.year[i].year}">${data.year[i].year}</option>`);
+              }
+              for(j =0 ; j<data.month.length ; j++){
+                $('#month_select').append(`<option value="${data.month[j].month}">${data.month[j].month}</option>`);
+              }
+              for(k =0 ; k<data.week.length ; k++){
+                $('#week_select').append(`<option value="${data.week[k].week_no}">${data.week[k].week_no}</option>`);
+              }
+
+        }
+    });
+
+}
+
+function getTotalRemaining(){
+    $.ajax({
+        url: 'services/counts.php?id=remaining',
+        dataType: 'JSON',
+        method: 'GET',
+        async: false,
+        success: function callback(data) {
+
+        $("#total_remaining").html(data[0].count)
+
+        }
+    });
+
+}
+
+
+function getCurrentWeek(){
+    $.ajax({
+        url: 'services/counts.php?id=currentWeek',
+        dataType: 'JSON',
+        method: 'GET',
+        async: false,
+        success: function callback(data) {
+
+        $("#visited_current_week").html(data[0].count)
+
+        }
+    });
+
+}
+
+
+function fillCounts(){
+    var week , month, year
+    month = $("#month_select").val()
+    year = $("#year_select").val()
+    week = $("#week_select").val()
+    
+    $.ajax({
+        url: "services/get_all_counts.php?week="+week+"&month="+month+"&year="+year ,
+        type: "GET",
+        dataType: "json",
+        //data: JSON.stringify(geom,layer.geometry),
+        // contentType: "application/json; charset=utf-8",
+        success: function callback(data) {
+            // var r=JSON.parse(response)
+              
+                 $("#total_orders").text(data.total[0].count);
+           
+                 $("#total_not_installed").text(data.not_surveyed[0].count);
+           
+                 $("#total_installed").text(data.installed[0].count);
+            
+                 $("#total_tras").text(data.tras[0].count);
+
+                 $("#total_remaining").text(data.remaining[0].count);
+
+                 $("#visited_current_week").text(data.week[0].count);
+
+
+           
+            
+            } 
+           
+    });
+}
  
+function setWeek_er(){
+    var week , month, year
+    month = $("#month_select").val()
+    year = $("#year_select").val()
+    week = $("#week_select").val()
+    if(week === ""){
+        $("#er_week").html("This Feild is required *")
+    }else{$("#er_week").html("")}
+    if(month === ""){
+        $("#er_month").html("This Feild is required *")
+    }else{$("#er_month").html("")}
+    if(year === ""){
+        $("#er_year").html("This Feild is required *")
+    }
+    if(week === "" || month === "" || year === ""){
+        return false
+    }else{$("#er_year").html("")}
+    
+    
+    
+
+    fillCounts()
+}
+
 
 
 $(document).ready(function(){
