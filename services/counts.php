@@ -11,12 +11,29 @@ class Tehsil extends connection {
 
     }
 
-    public function getAllCounts() {
-
+    public function getAllCounts($week , $month, $year) {
+        if ($week == ''){
+            $year_sql = "select MAX(year) from tbl_survey_details";
+            $year_q= pg_query($year_sql);
+            $year_f =pg_fetch_all($year_q);
+            $year = $year_f[0]['max'];
+             
+            $month_sql = "select MAX(month) from tbl_survey_details where year = '$year'";
+            $month_q= pg_query($month_sql);
+            $month_f = pg_fetch_all($month_q);
+            $month = $month_f[0]['max'];
+        
+            $week_sql= "select MAX(week_no) from tbl_survey_details where month = '$month'";
+            $week_q = pg_query($week_sql);
+            $week_f = pg_fetch_all($week_q);
+            $week = $week_f[0]['max'];
+            
+        
+        }
   //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";where  a.date_created::date<>'2021-12-01'
     //   $sql="select b.username,count(*) from demand_point a inner join tbl_user_info b on a.user_id=b.user_id  and is_not_surveyed<>'Yes' group by b.username";
         $sql = "with foo as (select * from tbl_user) select c.username,count(a.installed_status) from tbl_survey_details a,
-        tbl_meter b ,foo c where a.installation=b.installation_id and installed_status is not null and b.created_by::integer=c.id::integer
+        tbl_meter b ,foo c where a.installation=b.installation_id and installed_status is not null and a.week_no='$week' and a.month='$month' and a.year='$year' and b.created_by::integer=c.id::integer
           group by c.username";
     $output = array();
         $result_query = pg_query($sql);
@@ -29,7 +46,7 @@ class Tehsil extends connection {
 
         $sql = "with foo as (select * from tbl_user) select c.username,count(a.installed_status) from tbl_survey_details a,
         tbl_meter b ,foo c where a.installation=b.installation_id and installed_status is not null and b.created_by::integer=c.id::integer
-        and installed_status='Installed' group by c.username";
+        and installed_status='Installed' and week_no='$week' and month='$month' and year='$year' group by c.username";
         $result_query = pg_query($sql);
         if ($result_query) {
             $arrq = pg_fetch_all($result_query);
@@ -40,7 +57,7 @@ class Tehsil extends connection {
         // exit();
         $sql="with foo as (select * from tbl_user) select c.username,count(a.installed_status) from tbl_survey_details a,tbl_meter b ,
         foo c where a.installation=b.installation_id and installed_status is not null and b.created_by::integer=c.id::integer and 
-        installed_status='Unsurveyed' group by c.username";
+        installed_status='Unsurveyed' and week_no='$week' and month='$month' and year='$year' group by c.username";
         //$output = array();
         $result_query = pg_query($sql);
         if ($result_query) {
@@ -51,7 +68,7 @@ class Tehsil extends connection {
 
         $sql="with foo as (select * from tbl_user) select c.username,count(a.installed_status) from tbl_survey_details a,
         tbl_meter b ,foo c where a.installation=b.installation_id and installed_status is not null and b.created_by::integer=c.id::integer 
-        and installed_status='TRAS' group by c.username";
+        and installed_status='TRAS'  and week_no='$week' and month='$month' and year='$year' group by c.username";
         //$output = array();
         $result_query = pg_query($sql);
         if ($result_query) {
@@ -174,13 +191,35 @@ class Tehsil extends connection {
                               $this->closeConnection();
                     }
 
-                    public function getTotal_installed() {
-
+                    public function getTotal_installed($week, $month,$year) {
+                       
+                        
+                        
+                        if ($week == ''){
+                            $year_sql = "select MAX(year) from tbl_survey_details";
+                            $year_q= pg_query($year_sql);
+                            $year_f =pg_fetch_all($year_q);
+                            $year = $year_f[0]['max'];
+                             
+                            $month_sql = "select MAX(month) from tbl_survey_details where year = '$year'";
+                            $month_q= pg_query($month_sql);
+                            $month_f = pg_fetch_all($month_q);
+                            $month = $month_f[0]['max'];
+                        
+                            $week_sql= "select MAX(week_no) from tbl_survey_details where month = '$month'";
+                            $week_q = pg_query($week_sql);
+                            $week_f = pg_fetch_all($week_q);
+                            $week = $week_f[0]['max'];
+                            
+                        
+                        }
                             //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";
                                 $sql="select installed_status ,count(installed_status)  
                                 from tbl_survey_details where installed_status is not null
-                                and installed_status<>'' group by installed_status order by installed_status ASC";
-                                  $output = array();
+                                and installed_status<>'' and week_no='$week' and month='$month' and year='$year' group by installed_status order by installed_status ASC";
+                                // echo $sql;
+                                // exit();  
+                                $output = array();
                                   $result_query = pg_query($sql);
                                   if ($result_query) {
                                       $arrq = pg_fetch_all($result_query);
@@ -313,7 +352,10 @@ class Tehsil extends connection {
 $json = new Tehsil();
 //$json->closeConnection();
 if($_GET['id']=='all'){
-echo $json->getAllCounts();
+    $week = $_GET['week'];
+    $month = $_GET['month'];
+    $year = $_GET['year'];
+echo $json->getAllCounts($week , $month, $year);
 }else if($_GET['id']=='today'){
     echo $json->getTodayCounts();
 }else if($_GET['id']=='date'){
@@ -330,7 +372,10 @@ else if($_GET['id']=='total_not_installed'){
 else if($_GET['id']=='site_info'){
     echo $json->getTotal_siteInfo();
 }else if($_GET['id']=='total_installed'){
-    echo $json->getTotal_installed();
+    $week = $_GET['week'];
+    $month = $_GET['month'];
+    $year = $_GET['year'];
+    echo $json->getTotal_installed($week , $month, $year);
 }else if($_GET['id']=='users'){
     echo $json->getAll_Users();
 }else if($_GET['id']=='time'){

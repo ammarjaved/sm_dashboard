@@ -265,9 +265,12 @@ function createHighChart(cat,val,id,title,val1,val2,val3){
 }
 
 function getTotalCounts(){
-
+    var week , month, year
+    month = $("#month_select").val()
+    year = $("#year_select").val()
+    week = $("#week_select").val()
     $.ajax({
-        url: 'services/counts.php?id=all',
+        url: "services/counts.php?id=all&week="+week+"&month="+month+"&year="+year,
         dataType: 'JSON',
         method: 'GET',
         async: false,
@@ -578,8 +581,12 @@ function getSurveyedTotalBlack(){
 
 function getSurveyedCountsSubmitted(){
 
+    var week , month, year
+    month = $("#month_select").val()
+    year = $("#year_select").val()
+    week = $("#week_select").val()
     $.ajax({
-        url: 'services/counts.php?id=total_installed',
+        url: "services/counts.php?id=total_installed&week="+week+"&month="+month+"&year="+year,
         dataType: 'JSON',
         method: 'GET',
         async: false,
@@ -779,7 +786,9 @@ function setWeek_er(){
     
     
 
-    fillCounts()
+    fillCounts();
+    getSurveyedCountsSubmitted();
+    getTotalCounts();
 }
 
 
