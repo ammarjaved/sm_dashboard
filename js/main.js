@@ -275,6 +275,7 @@ function getTotalCounts(){
         method: 'GET',
         async: false,
         success: function callback(data) {
+            console.log(data);
 
             var cat=[];
             var val=[];
@@ -592,11 +593,11 @@ function getSurveyedCountsSubmitted(){
         async: false,
         success: function callback(data) {
             
-        total=parseInt(data.overall_total[0].count);
+        total=parseInt(data.overall_total);
         
-         var installed=parseInt(data.cat_total[0].count);
-         var unsurveyed=parseInt(data.cat_total[2].count);
-         var tras=parseInt(data.cat_total[1].count);
+         var installed=parseInt(data.installed);
+         var unsurveyed=parseInt(data.Unsurveyed);
+         var tras=parseInt(data.TRAS);
          pieChart(total,installed,unsurveyed,tras);
 
         

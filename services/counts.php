@@ -214,23 +214,43 @@ class Tehsil extends connection {
                         
                         }
                             //   $sql="select date_created::date,count(*) from demand_point where  date_created::date<>'2021-12-01' group by date_created::date order by date_created::date";
-                                $sql="select installed_status ,count(installed_status)  
-                                from tbl_survey_details where installed_status is not null
-                                and installed_status<>'' and week_no='$week' and month='$month' and year='$year' group by installed_status order by installed_status ASC";
+                                // $sql="select installed_status ,count(installed_status)  
+                                // from tbl_survey_details where installed_status is not null
+                                // and installed_status<>'' and week_no='$week' and month='$month' and year='$year' group by installed_status order by installed_status ASC";
                                 // echo $sql;
                                 // exit();  
+
+                                $sql = "select count(*) from tbl_survey_details where week_no='$week' and month='$month' and year='$year' and installed_status='Installed'";
+
                                 $output = array();
                                   $result_query = pg_query($sql);
                                   if ($result_query) {
                                       $arrq = pg_fetch_all($result_query);
-                                      $output['cat_total']= $arrq;
+                                      $output['installed']= $arrq[0]['count'];
                                               
                                   }
-                                  $sql1="select count(*) from tbl_survey_details";
+
+                                  $sql2 = "select count(*) from tbl_survey_details where week_no='$week' and month='$month' and year='$year' and installed_status='TRAS'";
+
+                                  $result_query = pg_query($sql2);
+                                  if ($result_query) {
+                                      $arrq = pg_fetch_all($result_query);
+                                      $output['TRAS']= $arrq[0]['count'];
+                                              
+                                  }
+
+                                  $sql = "select count(*) from tbl_survey_details where week_no='$week' and month='$month' and year='$year' and installed_status='Unsurveyed'";
+                                  $result_query = pg_query($sql);
+                                  if ($result_query) {
+                                      $arrq = pg_fetch_all($result_query);
+                                      $output['Unsurveyed']= $arrq[0]['count'];
+                                              
+                                  }
+                                  $sql1="select count(*) from tbl_survey_details where week_no='$week' and month='$month' and year='$year'";
                                   $result_query1 = pg_query($sql1);
                                   if ($result_query1) {
                                       $arrq1 = pg_fetch_all($result_query1);
-                                      $output['overall_total']= $arrq1;
+                                      $output['overall_total']= $arrq1[0]['count'];
                                               
                                   }
                           

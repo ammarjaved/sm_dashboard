@@ -37,9 +37,9 @@ $sql3="select count(*) from tbl_survey_details where installed_status='Installed
 week_no='$week' and month='$month' and year ='$year'";
 $sql4="select count(*) from tbl_survey_details where installed_status='TRAS'and 
 week_no='$week' and month='$month' and year ='$year'";
-$sql5="select count(*) from tbl_survey_details where installed_status ='0'and 
+$sql5="select count(*) from tbl_survey_details where installed_status ='Unsurveyed'and 
 week_no='$week' and month='$month' and year ='$year'";
-$sql6="select count(*) from tbl_survey_details where week_no =(select  max(week_no) from tbl_survey_details) and installed_status<>''";
+$sql6="select count(*) from tbl_survey_details where week_no ='$week' and month='$month' and year ='$year' and installed_status!='Unsurveyed'";
 
 //echo $sql1."<br/>";
 $query1=pg_query($sql1);
